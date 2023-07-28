@@ -12,10 +12,7 @@ dados_bancarios_java
 # Dados Bancários Java
 
 Este é um projeto Java simples que cria uma tabela no MySQL para armazenar dados bancários.
-
-## Configuração
-
-1. Certifique-se de ter o MySQL instalado e em execução no seu sistema.
+.
 
 ## Estrutura do Projeto
 
