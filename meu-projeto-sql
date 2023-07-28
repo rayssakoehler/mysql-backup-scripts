@@ -1,0 +1,67 @@
+CREATE DATABASE vagas_nodejs;
+
+USE vagas_nodejs;
+
+CREATE TABLE candidatos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  telefone VARCHAR(20) NOT NULL,
+  experiencia TEXT,
+  portfolio VARCHAR(200),
+  linkedin VARCHAR(200)
+);
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class PreencherRepositorioGitHub {
+
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/vagas_nodejs";
+        String user = "seu_usuario";
+        String password = "sua_senha";
+
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            // Dados do candidato
+            String nome = "Candidato 1";
+            String email = "candidato1@email.com";
+            String telefone = "(11) 99999-1111";
+            String experiencia = "Experiência com Node.js e JavaScript.";
+            String portfolio = "https://portfolio-candidato1.com";
+            String linkedin = "https://linkedin.com/in/candidato1";
+
+            // Inserir dados na tabela
+            String sql = "INSERT INTO candidatos (nome, email, telefone, experiencia, portfolio, linkedin) VALUES (?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, nome);
+                statement.setString(2, email);
+                statement.setString(3, telefone);
+                statement.setString(4, experiencia);
+                statement.setString(5, portfolio);
+                statement.setString(6, linkedin);
+
+                statement.executeUpdate();
+            }
+
+            // Criar arquivo de texto com as informações do candidato
+            String nomeArquivo = "candidato1.txt";
+            try (FileWriter writer = new FileWriter(nomeArquivo)) {
+                writer.write("Nome: " + nome + "\n");
+                writer.write("E-mail: " + email + "\n");
+                writer.write("Telefone: " + telefone + "\n");
+                writer.write("Experiência: " + experiencia + "\n");
+                writer.write("Portfolio: " + portfolio + "\n");
+                writer.write("LinkedIn: " + linkedin + "\n");
+            }
+
+            System.out.println("Dados do candidato inseridos no banco de dados e arquivo criado.");
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
